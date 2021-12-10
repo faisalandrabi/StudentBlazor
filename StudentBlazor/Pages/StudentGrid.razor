@@ -1,0 +1,33 @@
+﻿@using Logic
+@inherits StudentBase
+
+<MudTable Items="@StudentSet" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" @bind-student="student">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Student Details</MudText>
+        <br />
+        <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Student Id</MudTh>
+        <MudTh>Name</MudTh>
+        <MudTh>RollNO</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="ID">@context.Id</MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="D.O.B">@context.DateOfBirth</MudTd>
+        <MudTd>
+            <MudFab Color="Color.Secondary"  Icon="@Icons.Material.Filled.Edit" Size="Size.Small" aria-label="edit"  />
+            <MudFab Color="Color.Warning"  Icon="@Icons.Material.Filled.Delete" Size="Size.Small" aria-label="Delete" />
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+<div class="d-flex flex-wrap mt-4">
+    <MudSwitch @bind-Checked="@hover" Color="Color.Primary">Hover</MudSwitch>
+    <MudSwitch @bind-Checked="@dense" Color="Color.Secondary">Dense</MudSwitch>
+    <MudSwitch @bind-Checked="@striped" Color="Color.Tertiary">Striped</MudSwitch>
+    <MudSwitch @bind-Checked="@bordered" Color="Color.Warning">Bordered</MudSwitch>
+</div>

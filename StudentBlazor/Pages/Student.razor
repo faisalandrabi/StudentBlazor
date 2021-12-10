@@ -1,0 +1,74 @@
+﻿@using StudentBlazor.Models
+@using Logic
+@inherits StudentBase
+
+@inject StudentBlazor.IServices.IStudentService studentService
+
+
+<EditForm Model="@student" OnValidSubmit="SaveStudents" >
+    <DataAnnotationsValidator />
+    <MudCard>
+        <MudCardContent>
+            <MudTextField Label="Student Name" HelperText="Max. 100 characters"
+                          @bind-Value="student.Name" For="@(() => student.Name)" />
+
+            <MudItem xs="12" sm="6" md="4">
+                <MudSelect T="int" Label="Country" @bind-Value="student.CountryId" Strict="true" Variant="Variant.Outlined" Format="F2" AnchorOrigin="Origin.BottomCenter">
+                    @foreach (var country in CountrySet)
+                    {
+                        <MudSelectItem T="int" Value="@country.Id">@country.Name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4">
+                <MudSelect T="int" @bind-Value="student.ClassesId" Label="Class" Strict="true" Variant="Variant.Outlined" Format="F2" AnchorOrigin="Origin.BottomCenter">
+                    @foreach (var classobj in ClassSet)
+                    {
+                        <MudSelectItem T="int" Value="@classobj.Id">@classobj.class_name</MudSelectItem>
+                    }
+                </MudSelect>
+            </MudItem>
+            <MudDatePicker @bind-Value="student.DateOfBirth" Immediate="true" Label="Date of Birth"  DateFormat="M/d/yyyy"/>
+
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="ml-auto">Register</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="@(()=>Reset())" Class="mx-2">Reset</MudButton>
+        </MudCardActions>
+    </MudCard>
+    <MudText Typo="Typo.body2" Align="Align.Center" Class="my-4">
+        Fill out the form correctly to see the success message.
+    </MudText>
+
+</EditForm>
+
+<MudTable Items="@GetListOfStudents()" Dense="@dense" Hover="@hover" Bordered="@bordered" Striped="@striped" @bind-student="student">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Student Details</MudText>
+        <br />
+        <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
+    <HeaderContent>
+        <MudTh>Student Id</MudTh>
+        <MudTh>Name</MudTh>
+        <MudTh>Date Of Birth</MudTh>
+    </HeaderContent>
+    <RowTemplate>
+        <MudTd DataLabel="ID">@context.Id</MudTd>
+        <MudTd DataLabel="Name">@context.Name</MudTd>
+        <MudTd DataLabel="D.O.B">@context.DateOfBirth</MudTd>
+        <MudTd>
+            <MudFab Color="Color.Secondary" Icon="@Icons.Material.Filled.Edit" Size="Size.Small" aria-label="edit" OnClick="@(()=>Edit(context.Id))" />
+            <MudFab Color="Color.Warning" Icon="@Icons.Material.Filled.Delete" Size="Size.Small" aria-label="Delete" />
+        </MudTd>
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>
+<div class="d-flex flex-wrap mt-4">
+    <MudSwitch @bind-Checked="@hover" Color="Color.Primary">Hover</MudSwitch>
+    <MudSwitch @bind-Checked="@dense" Color="Color.Secondary">Dense</MudSwitch>
+    <MudSwitch @bind-Checked="@striped" Color="Color.Tertiary">Striped</MudSwitch>
+    <MudSwitch @bind-Checked="@bordered" Color="Color.Warning">Bordered</MudSwitch>
+</div>
